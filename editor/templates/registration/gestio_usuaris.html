@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{% static "sufee-admin-dashboard-master/vendors/datatables.net-bs4/css/dataTables.bootstrap4.min.css" %}">
+    <link rel="stylesheet" href="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" %}">
+
+    <link rel="stylesheet" href="{% static "sufee-admin-dashboard-master/assets/css/style.css" %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="col-md-12">
+    {% if peticions_de_registre %}
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">Peticions de registre</strong>
+        </div>
+        <div class="card-body">
+            <table id="taula-peticions-registre" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    {% if not user.is_staff %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-success" style="border-radius: 24px" onclick="confirmar_usuari('{% url 'confirmar_usuari' user.username %}')"><i class="fa fa-check"></i></button>
+                            <button class="btn btn-sm btn-danger" style="border-radius: 24px" onclick="denegar_usuari('{% url 'denegar_usuari' user.username %}')"><i class="fa fa-ban"></i></button>
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">Usuaris</strong>
+        </div>
+        <div class="card-body">
+            <table id="taula-tots-usuaris" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    {% if user.is_staff %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if not user.is_superuser %}
+                                <button class="btn btn-sm btn-success" style="border-radius: 24px" onclick="fer_administrador_usuari('{% url 'fer_administrador' user.username %}')">Fer administrador</button>
+                            {% else %}
+                                <button class="btn btn-sm btn-success" style="border-radius: 24px" onclick="treure_administrador_usuari('{% url 'treure_administrador' user.username %}')">Treure d'administrador</button>
+                            {% endif %}
+                            <button class="btn btn-sm btn-danger" style="border-radius: 24px" onclick="esborrar_usuari('{% url 'esborrar_usuari' user.username %}')">Esborrar</button>
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons/js/dataTables.buttons.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/jszip/dist/jszip.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/pdfmake/build/pdfmake.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/pdfmake/build/vfs_fonts.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons/js/buttons.html5.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons/js/buttons.print.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons/js/buttons.colVis.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/assets/js/init-scripts/data-table/datatables-init.js" %}"></script>
+    <script>
+        function confirmar_usuari(url) {
+           if (confirm('Vols confirmar la petició?')) {
+               location.href = url;
+           } else {
+               return false;
+           }
+        }
+        function denegar_usuari(url){
+           if (confirm('Vols denegar la petició?')) {
+               location.href = url;
+           } else {
+               return false;
+           }
+        }
+        function fer_administrador_usuari(url) {
+           if (confirm('Vols fer-li administrador?')) {
+               location.href = url;
+           } else {
+               return false;
+           }
+        }
+        function treure_administrador_usuari(url) {
+           if (confirm("Vols treure-li els permissos d'administració?")) {
+               location.href = url;
+           } else {
+               return false;
+           }
+        }
+        function esborrar_usuari(url) {
+           if (confirm("Vols esborrar l'usuari?")) {
+               location.href = url;
+           } else {
+               return false;
+           }
+        }
+    </script>
+    <script>
+    $(document).ready(function() {
+        $('#taula-peticions-registre').DataTable( {
+            "language": {
+                "url":"http://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
+            },
+            "paging": false,
+            "info": false,
+            "filter": false
+        } );
+
+    } );
+    $(document).ready(function() {
+        $('#taula-tots-usuaris').DataTable( {
+            "language": {
+                "url":"http://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
+            },
+            "paging": false,
+            "info": false,
+            "filter": false
+        } );
+
+    } );
+    </script>
+
+{% endblock %}

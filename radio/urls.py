@@ -18,11 +18,27 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from editor import views as edit_views
 from django.urls import reverse_lazy
 
 urlpatterns = [
+    # Editor
     url(r'^', include('editor.urls')),
+    # Admin
     url(r'^admin/', admin.site.urls),
+    # Gestio usuaris
+    url(r'^register$', edit_views.registration, name='registration'),
+    url(r'^usuaris/canvi_contrasenya$', edit_views.canvi_contrasenya, name='canvi_contrasenya'),
+    url(r'^usuaris/gestio$', edit_views.gestio_usuaris, name='gestio_usuaris'),
+    url(r'^usuaris/gestio/(?P<username>[\w\-.]+)/confirmar$', edit_views.confirmar_usuari, name='confirmar_usuari'),
+    url(r'^usuaris/gestio/(?P<username>[\w\-.]+)/denegar$', edit_views.denegar_usuari, name='denegar_usuari'),
+    url(r'^usuaris/gestio/(?P<username>[\w\-.]+)/treure_admin$', edit_views.treure_administrador, name='treure_administrador'),
+    url(r'^usuaris/gestio/(?P<username>[\w\-.]+)/fer_admin$', edit_views.fer_administrador, name='fer_administrador'),
+    url(r'^usuaris/gestio/(?P<username>[\w\-.]+)/esborrar$', edit_views.esborrar_usuari, name='esborrar_usuari'),
+    # Errors
+    url(r'^not-staff$', edit_views.not_staff, name='not_staff'),
+    url(r'^sense_permis$', edit_views.sense_permis, name='sense_permis'),
+    # Login
     url(r'^login$', auth_views.login, name='login'),
     url(r'^logout$', auth_views.logout, {'next_page': reverse_lazy('index')}, name='logout'),
 ] + static(settings.STATIC_URL)
