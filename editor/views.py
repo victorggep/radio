@@ -83,7 +83,7 @@ def confirmar_usuari(request, username):
         sg = sendgrid.SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY'))
         from_email = Email("noreply@radio-noticies.com")
         subject = "Radio-Noticies Login"
-        to_email = Email(u.email)
+        to_email = Email(User.objects.get(username=username).email)
         content = Content("text/plain", "L'administrador ja t'ha donat d'alta i pots accedir a la plataforma. Benvingut!")
         mail = Mail(from_email, subject, to_email, content)
         response = sg.client.mail.send.post(request_body=mail.get())
