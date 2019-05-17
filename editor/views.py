@@ -80,7 +80,7 @@ def gestio_usuaris(request):
 def confirmar_usuari(request, username):
     if request.user.is_superuser:
         u = User.objects.filter(username=username).update(is_staff=True)
-        sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
+        sg = sendgrid.SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY'))
         from_email = Email("noreply@radio-noticies.com")
         subject = "Radio-Noticies Login"
         to_email = Email(u.email)
