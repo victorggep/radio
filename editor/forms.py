@@ -56,8 +56,9 @@ class RegistrarUsuariForm(forms.Form):
 
 
 class CanviContrasenyaForm(forms.Form):
+    password_antic = forms.CharField(label='Antiga contrasenya', widget=forms.PasswordInput)
     password1 = forms.CharField(label='Contrasenya', widget=forms.PasswordInput)
-    password1 = forms.CharField(label='Contrasenya', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Repeteix Contrasenya', widget=forms.PasswordInput)
 
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')

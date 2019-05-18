@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
 
 <meta charset="UTF-8">
@@ -21,8 +21,8 @@ body {
 
 .login-card {
   padding: 40px;
-  width: 274px;
-  height: 370px;
+  width: 350px;
+  height: 470px;
   background-color: #F7F7F7;
   position: absolute;
   margin: auto;
@@ -129,7 +129,7 @@ body {
 <body>
   <div class="login-card">
     <h1>Canvi contrasenya</h1><br>
-
+      <span style="color: red"> {{ error }}</span>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

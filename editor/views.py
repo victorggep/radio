@@ -12,7 +12,7 @@ from .forms import NoticiaForm, RegistrarUsuariForm, CanviContrasenyaForm
 from .models import Noticia
 import os
 import sendgrid
-from sendgrid.helpers.mail import *
+from django.contrib.auth import authenticate
 
 
 def base_context(request):
@@ -55,10 +55,18 @@ def canvi_contrasenya(request):
     if request.method == "POST":
         form = CanviContrasenyaForm(request.POST)
         if form.is_valid():
-            user = User.objects.get(username=request.user.username)
-            user.set_password(form.cleaned_data['password1'])
-            user.save()
-            return HttpResponseRedirect(reverse_lazy('index'))
+            username = request.user.username
+            password = form.cleaned_data['password_antic']
+
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                user.set_password(form.cleaned_data['password1'])
+                user.save()
+                return HttpResponseRedirect(reverse_lazy('index'))
+            else:
+                context['form'] = form
+                context['error'] = 'Contrasenya antiga incorrecta'
+                return render(request, 'registration/canvi_contrasenya.html', context)
     else:
         form = CanviContrasenyaForm()
 
@@ -82,12 +90,6 @@ def confirmar_usuari(request, username):
     if request.user.is_superuser:
         User.objects.filter(username=username).update(is_staff=True)
         sg = sendgrid.SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY'))
-        # from_email = "noreply@radio-noticies.com"
-        # subject = "Radio-Noticies Login"
-        # to_emails = Email(User.objects.get(username=username).email.encode('utf-8'))
-        # to_emails = "victorggep@gmail.com"
-        # content = Content("text/plain", "L'administrador ja t'ha donat d'alta i pots accedir a la plataforma. Benvingut!")
-        # mail = Mail(from_email=from_email, to_emails=to_emails, subject=subject, plain_text_content=content)
         data = {
             "personalizations": [
                 {
@@ -96,11 +98,11 @@ def confirmar_usuari(request, username):
                             "email": User.objects.get(username=username).email
                         }
                     ],
-                    "subject": "Radio-Noticies Login"
+                    "subject": "Acces a Radio-Noticies"
                 }
             ],
             "from": {
-                "email": "noreply@radio-noticies.com"
+                "email": "noreply@radionoticies.com"
             },
             "content": [
                 {
