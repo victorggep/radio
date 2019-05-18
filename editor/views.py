@@ -93,7 +93,7 @@ def confirmar_usuari(request, username):
                 {
                     "to": [
                         {
-                            "email": "victorggep@gmail.com"
+                            "email": User.objects.get(username=username).email
                         }
                     ],
                     "subject": "Radio-Noticies Login"
