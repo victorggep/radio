@@ -85,7 +85,7 @@ def confirmar_usuari(request, username):
         from_email = "noreply@radio-noticies.com"
         subject = "Radio-Noticies Login"
         to_emails = User.objects.get(username=username).email.encode('utf-8')
-        content = "L'administrador ja t'ha donat d'alta i pots accedir a la plataforma. Benvingut!".encode('utf-8')
+        content = Content("text/plain", "L'administrador ja t'ha donat d'alta i pots accedir a la plataforma. Benvingut!")
         mail = Mail(from_email=from_email, to_emails=to_emails, subject=subject, plain_text_content=content)
         sg.client.mail.send.post(request_body=mail.get())
         context = base_context(request)
