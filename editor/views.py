@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
@@ -239,7 +239,7 @@ def sense_permis(request):
 @staff_member_required(login_url=reverse_lazy('not_staff'))
 def index(request):
     context = base_context(request)
-    noticies = Noticia.objects.all()
+    noticies = Noticia.objects.all().order_by('-updated_at')[:10]
     context['noticies'] = noticies
     return render(request, 'index/index.html', context)
 
@@ -315,3 +315,22 @@ def crear_noticia(request):
 
     context['form'] = form
     return render(request, 'noticies/crear.html', context)
+
+
+@login_required(login_url=reverse_lazy('login'))
+@staff_member_required(login_url=reverse_lazy('not_staff'))
+def veure_noticia(request, id):
+    context = base_context(request)
+    try:
+        noticia = Noticia.objects.get(id=id)
+    except:
+        return HttpResponseNotFound()
+    context['noticia'] = noticia
+    return render(request, 'noticies/veure_una.html', context)
+
+
+@login_required(login_url=reverse_lazy('login'))
+@staff_member_required(login_url=reverse_lazy('not_staff'))
+def filtrar_noticies(request):
+    context = base_context(request)
+    return render(request, 'noticies/veure_una.html', context)

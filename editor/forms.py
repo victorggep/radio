@@ -8,11 +8,11 @@ class NoticiaForm(forms.ModelForm):
 
     class Meta:
         model = Noticia
-        fields = ['titular', 'resum', 'cos_noticia']
+        fields = ['seccio', 'titular', 'cos_noticia']
 
         widgets = {
+            'seccio': forms.Select(attrs={"class": "form-control"}),
             'titular': forms.TextInput(attrs={"class": "form-control"}),
-            'resum': forms.Textarea(attrs={"class": "form-control"}),
             'cos_noticia': forms.Textarea(attrs={"class": "form-control"})
         }
 

@@ -15,7 +15,19 @@ class Perfil(models.Model):
 
 
 class Noticia(models.Model):
+    SECCIONS = (
+        ('L', 'Local'),
+        ('I', 'Internacional'),
+        ('P', 'Política'),
+        ('E', 'Economia'),
+        ('S', 'Esports'),
+        ('O', 'Opinió'),
+        ('A', 'Altres'),
+
+    )
+    seccio = models.CharField(max_length=1, choices=SECCIONS, default='A')
     titular = models.CharField(max_length=500)
-    resum = models.TextField()
     cos_noticia = models.TextField()
     autor = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

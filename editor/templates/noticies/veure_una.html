@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{% static "sufee-admin-dashboard-master/assets/css/style.css" %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-12" style="padding: 30px;">
+        <h4><span style="color: red">|</span> {{ noticia.get_seccio_display }}</h4>
+        <h1>{{ noticia.titular }}</h1>
+        <hr>
+        <p>
+            <strong>{{ noticia.autor.first_name }} {{ noticia.autor.last_name }}</strong>
+            <br>
+            {{ noticia.created_at }} | Actualitzat a les: {{ noticia.updated_at }}
+        </p>
+        <hr>
+        <p>{{ noticia.cos_noticia|linebreaks }}</p>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}

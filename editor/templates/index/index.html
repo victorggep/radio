@@ -20,17 +20,19 @@
             <table id="taula-totes-noticies" class="table table-striped table-bordered">
                 <thead>
                     <tr>
+                        <th>Secció</th>
                         <th>Titular</th>
                         <th>Autor</th>
-                        <th>Data</th>
+                        <th>Última modificació</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for noticia in noticies %}
-                    <tr>
+                    <tr style="cursor: pointer;" onclick="window.location.href='{% url 'veure_noticia' noticia.id %}'">
+                        <td>{{ noticia.get_seccio_display }}</td>
                         <td>{{ noticia.titular }}</td>
-                        <td>{{ noticia.autor.username }}</td>
-                        <td></td>
+                        <td>{{ noticia.autor.first_name }} {{ noticia.autor.last_name }}</td>
+                        <td>{{ noticia.updated_at|date:"d-n-Y (H:i)" }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
