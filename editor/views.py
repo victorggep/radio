@@ -63,6 +63,7 @@ def recuperar_contrasenya(request):
                     random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(10))
                 user = User.objects.get(email=email)
                 user.set_password(random_string)
+                user.save()
                 sg = sendgrid.SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY'))
                 data = {
                     "personalizations": [
