@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # Gestio usuaris
     url(r'^register$', edit_views.registration, name='registration'),
+    url(r'^usuaris/recuperar_contrasenya$', edit_views.recuperar_contrasenya, name='recuperar_contrasenya'),
     url(r'^usuaris/canvi_contrasenya$', edit_views.canvi_contrasenya, name='canvi_contrasenya'),
     url(r'^usuaris/gestio$', edit_views.gestio_usuaris, name='gestio_usuaris'),
     url(r'^usuaris/gestio/(?P<username>[\w\-.]+)/confirmar$', edit_views.confirmar_usuari, name='confirmar_usuari'),

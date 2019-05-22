@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div id="right-panel" class="right-panel col-sm-12" >
+<div class=" col-sm-12" >
 <form action="{% url 'crear_noticia' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}

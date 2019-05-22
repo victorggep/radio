@@ -17,8 +17,35 @@ class NoticiaForm(forms.ModelForm):
         }
 
 
+class PerfilForm(forms.Form):
+    nom = forms.CharField(label="Nom", max_length=100, required=False,
+                          widget=forms.TextInput(attrs={"class": "form-control"})
+                          )
+    cognom = forms.CharField(label="Cognom", max_length=100, required=False,
+                             widget=forms.TextInput(attrs={"class": "form-control"})
+                             )
+    email = forms.CharField(label="Email", max_length=100,
+                            widget=forms.TextInput(attrs={"class": "form-control"})
+                            )
+    telefon = forms.CharField(label="Telefon", max_length=15, required=False,
+                              widget=forms.TextInput(attrs={"class": "form-control"})
+                              )
+    facebook = forms.CharField(label="Facebook", max_length=100, required=False,
+                               widget=forms.TextInput(attrs={"class": "form-control"})
+                               )
+    linkedin = forms.CharField(label="LinkedIn", max_length=100, required=False,
+                               widget=forms.TextInput(attrs={"class": "form-control"})
+                               )
+    twitter = forms.CharField(label="Twitter", max_length=100, required=False,
+                              widget=forms.TextInput(attrs={"class": "form-control"})
+                              )
+
+
+
 class RegistrarUsuariForm(forms.Form):
-    username = forms.CharField(label="Nom d'usuari", min_length=4, max_length=150, widget=forms.TextInput)
+    username = forms.CharField(label="username", min_length=4, max_length=150, widget=forms.TextInput)
+    nom = forms.CharField(label="Nom", min_length=4, max_length=150, widget=forms.TextInput)
+    cognom = forms.CharField(label="Cognom", min_length=4, max_length=150, widget=forms.TextInput)
     email = forms.EmailField(label='Email', widget=forms.TextInput(attrs={"class": "form-control"}))
     password1 = forms.CharField(label='Contrasenya', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Confirma contrasenya', widget=forms.PasswordInput)
@@ -52,13 +79,17 @@ class RegistrarUsuariForm(forms.Form):
             self.cleaned_data['email'],
             self.cleaned_data['password1']
         )
+        user.first_name = self.cleaned_data['nom']
+        user.last_name = self.cleaned_data['cognom']
+        user.is_staff = False
+        user.save()
         return user
 
 
 class CanviContrasenyaForm(forms.Form):
-    password_antic = forms.CharField(label='Antiga contrasenya', widget=forms.PasswordInput)
-    password1 = forms.CharField(label='Contrasenya', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Repeteix Contrasenya', widget=forms.PasswordInput)
+    password_antic = forms.CharField(label='Antiga contrasenya', widget=forms.PasswordInput(attrs={"class": "form-control"}))
+    password1 = forms.CharField(label='Contrasenya', widget=forms.PasswordInput(attrs={"class": "form-control"}))
+    password2 = forms.CharField(label='Repeteix Contrasenya', widget=forms.PasswordInput(attrs={"class": "form-control"}))
 
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
@@ -68,3 +99,7 @@ class CanviContrasenyaForm(forms.Form):
             raise ValidationError("Les contrasenyes no coincideixen")
 
         return password2
+
+
+class RecuperarContrasenyaForm(forms.Form):
+    email = forms.CharField(label='Email', widget=forms.TextInput(attrs={"class": "form-control"}))

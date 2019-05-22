@@ -21,8 +21,8 @@ body {
 
 .login-card {
   padding: 40px;
-  width: 450px;
-  height: 720px;
+  width: 274px;
+  height: 370px;
   background-color: #F7F7F7;
   position: absolute;
   margin: auto;
@@ -128,12 +128,12 @@ body {
 </head>
 <body>
   <div class="login-card">
-    <h1>Registre</h1><br>
-
+    <h1>Recuperar contrasenya</h1><br>
+      <span style="color: red">{{ missatge }}</span>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-      <input class="login login-submit" type="submit" value="Log-In">
+      <input class="login login-submit" type="submit" value="Enviar">
     </form>
 </div>
 </body>

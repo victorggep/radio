@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+<div class=" col-sm-12" >
+    <div class="card">
+        <div class="card-header"><strong class="card-title">Editar perfil</strong>
+
+        </div>
+        <div class="card-body">
+            <form action="{% url 'editar_perfil' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Guardar" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+</div><!-- /#right-panel -->
+{% endblock %}

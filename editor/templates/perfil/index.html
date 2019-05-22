@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{% static "sufee-admin-dashboard-master/vendors/datatables.net-bs4/css/dataTables.bootstrap4.min.css" %}">
+    <link rel="stylesheet" href="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" %}">
+
+    <link rel="stylesheet" href="{% static "sufee-admin-dashboard-master/assets/css/style.css" %}">
+    <link rel="stylesheet" href="{% static "css/custom.css" %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">{{ user.first_name }} {{ user.last_name }}
+            {% if pot_editar %}
+                <a class="btn btn-sm btn-secondary" style="border-radius: 50%;" href="{% url 'editar_perfil' %}"><i class="fa fa-edit"></i></a>
+            {% endif %}
+            </strong>
+
+        </div>
+        <div class="card-body">
+            <p style="margin-left: 10px">
+                <i class="fa fa-envelope-o user_info"></i>{{ user.email }}
+                <br>
+                <i class="fa fa-phone user_info"></i>{% if perfil.telefon != None %}{{ perfil.telefon }} {% endif %}
+                <br>
+                <i class="fa fa-facebook user_info"></i>{% if perfil.facebook != None %}{{ perfil.facebook }} {% endif %}
+                <br>
+                <i class="fa fa-linkedin user_info"></i>{% if perfil.linkedin != None %}{{ perfil.linkedin }} {% endif %}
+                <br>
+                <i class="fa fa-twitter user_info"></i>{% if perfil.twitter != None %}{{ perfil.twitter }} {% endif %}
+            </p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">Noticies escrites</strong>
+        </div>
+        <div class="card-body">
+            <table id="taula-totes-noticies" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Titular</th>
+                        <th>Autor</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for noticia in noticies %}
+                    <tr>
+                        <td>{{ noticia.titular }}</td>
+                        <td>{{ noticia.autor.username }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons/js/dataTables.buttons.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/jszip/dist/jszip.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/pdfmake/build/pdfmake.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/pdfmake/build/vfs_fonts.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons/js/buttons.html5.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons/js/buttons.print.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/vendors/datatables.net-buttons/js/buttons.colVis.min.js" %}"></script>
+    <script src="{% static "sufee-admin-dashboard-master/assets/js/init-scripts/data-table/datatables-init.js" %}"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#taula-totes-noticies').DataTable( {
+            "language": {
+                "url":"http://cdn.datatables.net/plug-ins/1.10.19/i18n/Catalan.json"
+            }
+        } );
+
+    } );
+    </script>
+
+{% endblock %}
