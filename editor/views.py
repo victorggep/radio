@@ -305,7 +305,7 @@ def totes_noticies(request):
     context = base_context(request)
     noticies = Noticia.objects.all().order_by('-updated_at')
     context['noticies'] = noticies
-    return render(request, 'index/index.html', context)
+    return render(request, 'noticies/totes_noticies.html', context)
 
 
 @login_required(login_url=reverse_lazy('login'))
