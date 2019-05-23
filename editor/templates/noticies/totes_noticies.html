@@ -22,17 +22,17 @@
                     <tr>
                         <th>Secció</th>
                         <th>Titular</th>
-                        <th>Autor</th>
                         <th>Última modificació</th>
+                        <th>Autor</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for noticia in noticies %}
-                    <tr style="cursor: pointer;" onclick="window.location.href='{% url 'veure_noticia' noticia.id %}'">
-                        <td>{{ noticia.get_seccio_display }}</td>
-                        <td>{{ noticia.titular }}</td>
-                        <td>{{ noticia.autor.first_name }} {{ noticia.autor.last_name }}</td>
-                        <td>{{ noticia.updated_at|date:"d-n-Y (H:i)" }}</td>
+                    <tr>
+                        <td style="cursor: pointer;" onclick="window.location.href='{% url 'veure_noticia' noticia.id %}'">{{ noticia.get_seccio_display }}</td>
+                        <td style="cursor: pointer;" onclick="window.location.href='{% url 'veure_noticia' noticia.id %}'">{{ noticia.titular }}</td>
+                        <td style="cursor: pointer;" onclick="window.location.href='{% url 'veure_noticia' noticia.id %}'">{{ noticia.updated_at|date:"d-n-Y (H:i)" }}</td>
+                        <td> <a href="{% url 'perfil' noticia.autor.username %}"> {{ noticia.autor.first_name }} {{ noticia.autor.last_name }}</a> </td>
                     </tr>
                 {% endfor %}
                 </tbody>
