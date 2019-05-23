@@ -47,7 +47,7 @@
                         <th>Secció</th>
                         <th>Titular</th>
                         <th>Data</th>
-                        <th>Opcions</th>
+                        {% if user == request.user %}<th>Opcions</th>{% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -56,10 +56,12 @@
                         <td style="cursor: pointer" onclick="window.location.href='{% url 'veure_noticia' noticia.id %}'">{{ noticia.get_seccio_display }}</td>
                         <td style="cursor: pointer" onclick="window.location.href='{% url 'veure_noticia' noticia.id %}'">{{ noticia.titular }}</td>
                         <td style="cursor: pointer" onclick="window.location.href='{% url 'veure_noticia' noticia.id %}'">{{ noticia.updated_at|date:"d-n-Y (H:i)" }}</td>
+                        {% if user == request.user %}
                         <td>
                             <a class="btn btn-sm btn-secondary" style="border-radius: 24px" href="{% url 'editar_noticia' noticia.id %}"><i class="fa fa-edit "></i></a>
                             <button class="btn btn-sm btn-danger" style="border-radius: 24px" onclick="esborrar('{% url 'esborrar_noticia' noticia.id %}')"><i class="fa fa-close"></i></button>
                         </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>
