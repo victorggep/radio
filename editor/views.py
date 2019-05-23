@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponseNotAllowed
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
@@ -301,6 +301,15 @@ def editar_perfil(request):
 ################################
 @login_required(login_url=reverse_lazy('login'))
 @staff_member_required(login_url=reverse_lazy('not_staff'))
+def totes_noticies(request):
+    context = base_context(request)
+    noticies = Noticia.objects.all().order_by('-updated_at')
+    context['noticies'] = noticies
+    return render(request, 'index/index.html', context)
+
+
+@login_required(login_url=reverse_lazy('login'))
+@staff_member_required(login_url=reverse_lazy('not_staff'))
 def crear_noticia(request):
     context = base_context(request)
     if request.method == "POST":
@@ -309,7 +318,7 @@ def crear_noticia(request):
             post = form.save(commit=False)
             post.autor = request.user
             post.save()
-            return HttpResponseRedirect(reverse_lazy('index'))
+            return HttpResponseRedirect(reverse_lazy('veure_noticia', kwargs={'id': post.id}))
     else:
         form = NoticiaForm()
 
@@ -327,6 +336,44 @@ def veure_noticia(request, id):
         return HttpResponseNotFound()
     context['noticia'] = noticia
     return render(request, 'noticies/veure_una.html', context)
+
+
+@login_required(login_url=reverse_lazy('login'))
+@staff_member_required(login_url=reverse_lazy('not_staff'))
+def editar_noticia(request, id):
+    try:
+        noticia = Noticia.objects.get(id=id)
+    except:
+        return HttpResponseNotFound()
+
+    context = base_context(request)
+    if request.method == "POST":
+        form = NoticiaForm(request.POST, instance=noticia)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return HttpResponseRedirect(reverse_lazy('veure_noticia', kwargs={'id': id}))
+    else:
+        form = NoticiaForm(instance=noticia)
+
+    context['form'] = form
+    context['id'] = id
+    return render(request, 'noticies/editar.html', context)
+
+
+@login_required(login_url=reverse_lazy('login'))
+@staff_member_required(login_url=reverse_lazy('not_staff'))
+def esborrar_noticia(request, id):
+    context = base_context(request)
+    try:
+        noticia = Noticia.objects.get(id=id)
+        if noticia.autor == request.user:
+            noticia.delete()
+        else:
+            return HttpResponseNotAllowed()
+    except:
+        return HttpResponseNotFound()
+    return HttpResponseRedirect(reverse_lazy('perfil', kwargs={'username': request.user.username}))
 
 
 @login_required(login_url=reverse_lazy('login'))

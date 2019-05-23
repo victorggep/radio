@@ -44,17 +44,22 @@
             <table id="taula-totes-noticies" class="table table-striped table-bordered">
                 <thead>
                     <tr>
+                        <th>Secció</th>
                         <th>Titular</th>
-                        <th>Autor</th>
                         <th>Data</th>
+                        <th>Opcions</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for noticia in noticies %}
                     <tr>
-                        <td>{{ noticia.titular }}</td>
-                        <td>{{ noticia.autor.username }}</td>
-                        <td></td>
+                        <td style="cursor: pointer" onclick="window.location.href='{% url 'veure_noticia' noticia.id %}'">{{ noticia.get_seccio_display }}</td>
+                        <td style="cursor: pointer" onclick="window.location.href='{% url 'veure_noticia' noticia.id %}'">{{ noticia.titular }}</td>
+                        <td style="cursor: pointer" onclick="window.location.href='{% url 'veure_noticia' noticia.id %}'">{{ noticia.updated_at|date:"d-n-Y (H:i)" }}</td>
+                        <td>
+                            <a class="btn btn-sm btn-secondary" style="border-radius: 24px" href="{% url 'editar_noticia' noticia.id %}"><i class="fa fa-edit "></i></a>
+                            <button class="btn btn-sm btn-danger" style="border-radius: 24px" onclick="esborrar('{% url 'esborrar_noticia' noticia.id %}')"><i class="fa fa-close"></i></button>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -88,5 +93,13 @@
 
     } );
     </script>
-
+    <script>
+        function esborrar(url) {
+           if (confirm('Estar segur que la vols esborrar?')) {
+               location.href = url;
+           } else {
+               return false;
+           }
+        }
+    </script>
 {% endblock %}

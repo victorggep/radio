@@ -64,12 +64,12 @@
                         <td>{{ user.first_name }} {{ user.last_name }}</td>
                         <td>{{ user.email }}</td>
                         <td>
-                            {% if not user.is_superuser %}
-                                <button class="btn btn-sm btn-success" style="border-radius: 24px" onclick="fer_administrador_usuari('{% url 'fer_administrador' user.username %}')">Fer administrador</button>
-                            {% else %}
-                                <button class="btn btn-sm btn-success" style="border-radius: 24px" onclick="treure_administrador_usuari('{% url 'treure_administrador' user.username %}')">Treure d'administrador</button>
-                            {% endif %}
                             <button class="btn btn-sm btn-danger" style="border-radius: 24px" onclick="esborrar_usuari('{% url 'esborrar_usuari' user.username %}')">Esborrar</button>
+                            {% if not user.is_superuser %}
+                                <button class="btn btn-sm btn-secondary" style="border-radius: 24px" onclick="fer_administrador_usuari('{% url 'fer_administrador' user.username %}')">Fer administrador</button>
+                            {% else %}
+                                <button class="btn btn-sm btn-secondary" style="border-radius: 24px" onclick="treure_administrador_usuari('{% url 'treure_administrador' user.username %}')">Treure d'administrador</button>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endif %}

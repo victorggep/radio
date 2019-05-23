@@ -10,15 +10,20 @@
 {% block content %}
     <div class="col-md-12" style="padding: 30px;">
         <h4><span style="color: red">|</span> {{ noticia.get_seccio_display }}</h4>
-        <h1>{{ noticia.titular }}</h1>
+        <h1>{{ noticia.titular }}
+            {% if request.user.username == noticia.autor.username %}
+                <a class="btn btn-secondary" style="border-radius: 24px" href="{% url 'editar_noticia' noticia.id %}"><i class="fa fa-edit"></i></a>
+            {% endif %}
+        </h1>
         <hr>
         <p>
-            <strong>{{ noticia.autor.first_name }} {{ noticia.autor.last_name }}</strong>
+            <strong><a href="{% url 'perfil' noticia.autor.username %}">{{ noticia.autor.first_name }} {{ noticia.autor.last_name }}</a></strong>
             <br>
-            {{ noticia.created_at }} | Actualitzat a les: {{ noticia.updated_at }}
+            {{ noticia.created_at|date:"d-n-Y"}} | Actualitzat el: {{ noticia.updated_at|date:"d-n-Y"}}
         </p>
         <hr>
         <p>{{ noticia.cos_noticia|linebreaks }}</p>
+
     </div>
 {% endblock %}
 

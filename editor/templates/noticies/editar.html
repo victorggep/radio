@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+<div class=" col-sm-12" >
+<form action="{% url 'editar_noticia' id %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Guardar" class="btn btn-primary">
+</form>
+</div><!-- /#right-panel -->
+{% endblock %}
