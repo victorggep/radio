@@ -343,10 +343,6 @@ def veure_noticia(request, id):
 def editar_noticia(request, id):
     try:
         noticia = Noticia.objects.get(id=id)
-        if noticia.autor == request.user:
-            noticia.delete()
-        else:
-            return HttpResponseNotAllowed()
     except:
         return HttpResponseNotFound()
 
